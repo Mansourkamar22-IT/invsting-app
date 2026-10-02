@@ -1,0 +1,6 @@
+{
+  "name": "ApexVault - Lock Savings & Investment App",
+  "description": "Fintech mobile and web app featuring high-yield 30-day time-locked savings vaults with 10% early exit protection, real-time stock investing in NVIDIA and top companies, and instant Wish Money peer-to-peer transfers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

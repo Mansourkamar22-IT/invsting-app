@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "UserWallet": {
+      "title": "User Wallet",
+      "description": "Represents the user financial balances and Wish/Axx identifier",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "wishTag": { "type": "string" },
+        "availableCash": { "type": "number" },
+        "lockedInVaults": { "type": "number" },
+        "investedInStocks": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "availableCash", "lockedInVaults", "investedInStocks"]
+    },
+    "LockedVault": {
+      "title": "Locked Savings Vault",
+      "description": "A time-locked savings deposit with a strict 1-month lock and 10% early exit penalty",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "principalAmount": { "type": "number" },
+        "lockedAt": { "type": "string" },
+        "unlockDate": { "type": "string" },
+        "apy": { "type": "number" },
+        "status": { "type": "string", "enum": ["locked", "matured", "unlocked_early"] },
+        "penaltyRate": { "type": "number" },
+        "penaltyPaid": { "type": "number" },
+        "payoutAmount": { "type": "number" },
+        "category": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "principalAmount", "lockedAt", "unlockDate", "status", "penaltyRate"]
+    },
+    "StockInvestment": {
+      "title": "Stock Investment Position",
+      "description": "User stock holdings in companies like NVIDIA, Apple, Microsoft, etc.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "symbol": { "type": "string" },
+        "companyName": { "type": "string" },
+        "shares": { "type": "number" },
+        "averageBuyPrice": { "type": "number" },
+        "totalInvested": { "type": "number" },
+        "lastUpdated": { "type": "string" }
+      },
+      "required": ["id", "userId", "symbol", "companyName", "shares", "averageBuyPrice", "totalInvested"]
+    },
+    "TransferTransaction": {
+      "title": "Transaction Record",
+      "description": "Ledger of transfers, deposits, lock-ins, and investments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string" },
+        "recipientTag": { "type": "string" },
+        "recipientName": { "type": "string" },
+        "amount": { "type": "number" },
+        "fee": { "type": "number" },
+        "note": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "amount", "timestamp", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserWallet",
+      "description": "User profile, balance, and account state"
+    },
+    "/users/{userId}/vaults/{vaultId}": {
+      "schema": "LockedVault",
+      "description": "User time-locked savings deposits with penalty logic"
+    },
+    "/users/{userId}/investments/{symbol}": {
+      "schema": "StockInvestment",
+      "description": "User stock and company investment positions"
+    },
+    "/users/{userId}/transactions/{txId}": {
+      "schema": "TransferTransaction",
+      "description": "Ledger history of deposits, withdrawals, locks, and transfers"
+    }
+  }
+}
